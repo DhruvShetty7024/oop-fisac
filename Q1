@@ -1,0 +1,107 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+class SortUtility<T extends Comparable<T>> {
+    private T[] data;
+
+    public SortUtility(T[] data) {
+        this.data = data;
+    }
+
+    public void sort() {
+        Arrays.sort(data);
+    }
+
+    public void display() {
+        for (T element : data) {
+            System.out.println(element);
+        }
+    }
+}
+
+class Employee implements Comparable<Employee> {
+    private String name;
+    private int YoE;
+
+    public Employee(String name, int YoE) {
+        this.name = name;
+        this.YoE = YoE;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee name=" + name + ", YoE=" + YoE;
+    }
+
+    @Override
+    public int compareTo(Employee other) {
+        return Integer.compare(this.YoE, other.YoE);
+    }
+}
+
+class Student implements Comparable<Student> {
+    private String name;
+    private String grade;
+
+    public Student(String name, String grade) {
+        this.name = name;
+        this.grade = grade;
+    }
+
+    @Override
+    public String toString() {
+        return "Student name=" + name + ", grade=" + grade ;
+    }
+
+    @Override
+    public int compareTo(Student other) {
+        return this.grade.compareTo(other.grade);
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the number of employees: ");
+        int numEmployees = scanner.nextInt();
+        scanner.nextLine();  // Consume the newline character
+
+        Employee[] employees = new Employee[numEmployees];
+        for (int i = 0; i < numEmployees; i++) {
+            System.out.print("Enter name for employee " + (i+1) + ": ");
+            String name = scanner.nextLine();
+            System.out.print("Enter years of experience for employee " + (i+1) + ": ");
+            int YoE = scanner.nextInt();
+            scanner.nextLine();  // Consume the newline character
+
+            employees[i] = new Employee(name, YoE);
+        }
+
+        System.out.print("Enter the number of students: ");
+        int numStudents = scanner.nextInt();
+        scanner.nextLine();  // Consume the newline character
+
+        Student[] students = new Student[numStudents];
+        for (int i = 0; i < numStudents; i++) {
+            System.out.print("Enter name for student " + (i+1) + ": ");
+            String name = scanner.nextLine();
+            System.out.print("Enter grade for student " + (i+1) + ": ");
+            String grade = scanner.nextLine();
+
+            students[i] = new Student(name, grade);
+        }
+
+        SortUtility<Employee> employeeSorter = new SortUtility<>(employees);
+        SortUtility<Student> studentSorter = new SortUtility<>(students);
+
+        employeeSorter.sort();
+        studentSorter.sort();
+
+        System.out.println("\nSorted Employees:");
+        employeeSorter.display();
+
+        System.out.println("\nSorted Students:");
+        studentSorter.display();
+    }
+}
