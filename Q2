@@ -1,0 +1,67 @@
+import java.util.Scanner;
+
+class WordNotFoundException extends Exception {
+    public WordNotFoundException(String message) {
+        super(message);
+    }
+}
+
+class WordCountThread extends Thread {
+    private String sentence;
+
+    public WordCountThread(String sentence) {
+        this.sentence = sentence;
+    }
+
+    @Override
+    public void run() {
+        int count = 0;
+        String[] words = sentence.split(" ");
+        for (String word : words) {
+            if ("aeiouAEIOU".indexOf(word.charAt(0)) != -1) {
+                count++;
+            }
+        }
+        if (count == 0) {
+            try {
+                throw new WordNotFoundException("Word not found which starts with a vowel.");
+            } catch (WordNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            System.out.println("Number of words starting with vowels: " + count);
+        }
+    }
+}
+
+class WordLengthThread extends Thread {
+    private String sentence;
+
+    public WordLengthThread(String sentence) {
+        this.sentence = sentence;
+    }
+
+    @Override
+    public void run() {
+        String[] words = sentence.split(" ");
+        System.out.println("Length of each word:");
+        for (String word : words) {
+            System.out.println(word + ": " + word.length());
+        }
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter a sentence: ");
+        String sentence = scanner.nextLine();
+
+        WordCountThread wordCountThread = new WordCountThread(sentence);
+        WordLengthThread wordLengthThread = new WordLengthThread(sentence);
+
+        wordCountThread.start();
+        wordLengthThread.start();
+    }
+}
